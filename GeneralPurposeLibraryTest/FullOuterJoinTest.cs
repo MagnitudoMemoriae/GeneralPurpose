@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using GeneralPurposeLibrary;
+﻿using GeneralPurposeLibrary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
 
 namespace GeneralPurposeLibraryTest
 {
@@ -11,12 +11,10 @@ namespace GeneralPurposeLibraryTest
         [TestMethod]
         public void TestMethod1()
         {
-            List<String> First = new List<String>()  { "A", "C" };
+            List<String> First = new List<String>() { "A", "C" };
             List<String> Second = new List<String>() { "A", "B" };
 
-            
-
-            FullOuterJoin<String> fullOuterJoin = new FullOuterJoin<String>(First, Second,String.Compare);
+            FullOuterJoin<String> fullOuterJoin = new FullOuterJoin<String>(First, Second, String.Compare);
             fullOuterJoin.Process();
 
             Boolean Both = ((fullOuterJoin.Response.Both[0] == "A") && (fullOuterJoin.Response.Both.Count == 1));
@@ -25,6 +23,7 @@ namespace GeneralPurposeLibraryTest
 
             Assert.AreEqual(true, Both && OnlyFirst && OnlySecond);
         }
+
         [TestMethod]
         public void TestMethod2()
         {

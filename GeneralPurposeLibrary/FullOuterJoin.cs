@@ -126,8 +126,6 @@ namespace GeneralPurposeLibrary
                 SecondOrderd.AddRange(this._Seconds);
             }
 
-
-
             int iFirst = 0;
             int iSecond = 0;
             // Only for debug

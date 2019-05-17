@@ -1,22 +1,17 @@
-﻿using System;
+﻿using GeneralPurposeLibrary;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
-using GeneralPurposeLibrary;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GeneralPurposeLibraryTest
 {
-
-     
-
     [TestClass]
     public class RangeTest
     {
         [TestMethod]
         public void TestInt01()
         {
-
-            Range<int> range1 = new Range<int>(0 , 10 , IntervalType.IN_IN,Comparer.Compare);
+            Range<int> range1 = new Range<int>(0, 10, IntervalType.IN_IN, Comparer.Compare);
             Range<int> range2 = new Range<int>(1, 11, IntervalType.IN_IN, Comparer.Compare);
             RangeEngine<int> re = new RangeEngine<int>(new List<Range<int>>() { range1, range2 });
 
@@ -26,7 +21,6 @@ namespace GeneralPurposeLibraryTest
         [TestMethod]
         public void TestInt02()
         {
-
             Range<int> range1 = new Range<int>(0, 10, IntervalType.IN_IN, Comparer.Compare);
             Range<int> range2 = new Range<int>(1, 11, IntervalType.IN_IN, Comparer.Compare);
             RangeEngine<int> re = new RangeEngine<int>(new List<Range<int>>() { range1, range2 });
@@ -37,7 +31,6 @@ namespace GeneralPurposeLibraryTest
         [TestMethod]
         public void TestInt03()
         {
-
             Range<int> range1 = new Range<int>(0, 10, IntervalType.IN_IN, Comparer.Compare);
             Range<int> range2 = new Range<int>(1, 11, IntervalType.IN_IN, Comparer.Compare);
             RangeEngine<int> re = new RangeEngine<int>(new List<Range<int>>() { range1, range2 });

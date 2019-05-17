@@ -46,6 +46,7 @@ namespace GeneralPurposeLibrary
             this._First = first;
             this._Second = second;
             this._Interval = interval;
+
         }
 
         public Boolean Match(int value)
@@ -99,7 +100,6 @@ namespace GeneralPurposeLibrary
         }
     }
 
-
     public class Range<T>
     {
         private T _First = default(T);
@@ -139,7 +139,7 @@ namespace GeneralPurposeLibrary
             }
         }
 
-        public Range(T first, T second, IntervalType interval, Func<T,T,int> comparer)
+        public Range(T first, T second, IntervalType interval, Func<T, T, int> comparer)
         {
             this._First = first;
             this._Second = second;
@@ -154,7 +154,7 @@ namespace GeneralPurposeLibrary
             switch (this._Interval)
             {
                 case IntervalType.IN_IN:
-                    ReturnValue = (this._Comparer( this._First , value) <= 0) && (this._Comparer(value, this._Second) <= 0);
+                    ReturnValue = (this._Comparer(this._First, value) <= 0) && (this._Comparer(value, this._Second) <= 0);
                     break;
 
                 case IntervalType.IN_OUT:

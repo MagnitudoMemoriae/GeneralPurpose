@@ -1,5 +1,4 @@
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("GeneralPurposeLibraryTest")]
@@ -10,9 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-
 [assembly: ComVisible(false)]
-
 [assembly: Guid("4ff44030-3081-4536-949c-321099c5321f")]
 
 // [assembly: AssemblyVersion("1.0.*")]

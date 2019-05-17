@@ -1,22 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GeneralPurposeLibrary
 {
-    public class Comparer
+    public static class Comparer
     {
-        public static int Compare(int first , int second)
+        public static int Compare(int first, int second)
         {
             int ReturnValue = 0;
 
-            if(first == second)
+            if (first == second)
             {
                 ReturnValue = 0;
             }
             else
             {
-                if(first < second)
+                if (first < second)
                 {
                     ReturnValue = -1;
                 }
@@ -27,6 +25,11 @@ namespace GeneralPurposeLibrary
             }
 
             return ReturnValue;
+        }
+
+        public static int Compare(String first, String second)
+        {
+            return String.Compare(first, second);
         }
     }
 }
