@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace GeneralPurposeLibrary.FiniteStateMachines
 {
@@ -10,6 +9,7 @@ namespace GeneralPurposeLibrary.FiniteStateMachines
         public readonly HashSet<Transition> Table;
         private HashSet<Transition> _PossibleTransition = new HashSet<Transition>();
         private FSMState _CurrentState;
+
         public FiniteStateMachine(HashSet<Transition> table)
         {
             Table = table;
@@ -43,7 +43,6 @@ namespace GeneralPurposeLibrary.FiniteStateMachines
             SetPossibleTransition();
 
             return this._CurrentState;
-
         }
 
         public FSMState CurrentState
@@ -68,12 +67,10 @@ namespace GeneralPurposeLibrary.FiniteStateMachines
 
     public class FSMState : FSMObject
     {
-
     }
 
     public class FSMEvent : FSMObject
     {
-
     }
 
     public class Transition : IComparable
@@ -96,10 +93,8 @@ namespace GeneralPurposeLibrary.FiniteStateMachines
             this._Hash = CompositeName.GetHashCode();
         }
 
-
         public int CompareTo(object obj)
         {
-
             if (obj == null)
             {
                 return -1;

@@ -46,7 +46,6 @@ namespace GeneralPurposeLibrary
             this._First = first;
             this._Second = second;
             this._Interval = interval;
-
         }
 
         public Boolean Match(int value)

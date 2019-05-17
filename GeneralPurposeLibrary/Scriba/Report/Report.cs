@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace GeneralPurposeLibrary.Scriba.Report
 {
     public abstract class ReportOutputItem
     {
-
     }
 
     public abstract class ReportOutputTable
     {
         private IEnumerable<ReportOutputItem> _Items;
+
         public IEnumerable<ReportOutputItem> Items
         {
             get
@@ -23,18 +21,16 @@ namespace GeneralPurposeLibrary.Scriba.Report
 
     public class ReportGearArguments
     {
-
     }
 
     public class ReportGearOutputFormat
     {
-
     }
 
     public abstract class ReportGear
     {
-
         private ReportOutputTable _Table;
+
         public ReportOutputTable Table
         {
             get
@@ -53,6 +49,5 @@ namespace GeneralPurposeLibrary.Scriba.Report
         public abstract void Process();
 
         public abstract void SaveAs(ReportGearOutputFormat format);
-
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace GeneralPurposeLibrary.Tables
 {
@@ -32,15 +31,13 @@ namespace GeneralPurposeLibrary.Tables
 
         public PlasmaParticel()
         {
-
         }
-
     }
 
     public class PlasmaBulk
     {
-
         private HashSet<PlasmaParticel> _Particels = new HashSet<PlasmaParticel>();
+
         public HashSet<PlasmaParticel> Particels
         {
             get

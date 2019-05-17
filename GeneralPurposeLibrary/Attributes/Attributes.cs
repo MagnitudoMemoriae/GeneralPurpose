@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 
 namespace GeneralPurposeLibrary.Attributes
 {
@@ -118,7 +117,5 @@ namespace GeneralPurposeLibrary.Attributes
 
             return ReturnValue;
         }
-
-        
     }
 }
