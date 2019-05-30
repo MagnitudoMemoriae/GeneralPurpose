@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GeneralPurposeLibrary
+namespace GeneralPurposeLibrary.Comparers
 {
     public static class Comparer
     {
