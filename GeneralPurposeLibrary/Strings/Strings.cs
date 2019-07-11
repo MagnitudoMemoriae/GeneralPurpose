@@ -57,5 +57,75 @@ namespace GeneralPurposeLibrary.Strings
 
             return ReturnValue;
         }
+
+        public static String IfNullGoEmpty(String element)
+        {
+            String ReturnValue = String.Empty;
+
+            if (String.IsNullOrEmpty(element) == false)
+            {
+                ReturnValue = element;
+            }
+
+            return ReturnValue;
+        }
+
+        public static String IfObjectNullGoEmpty(object element)
+        {
+            String ReturnValue = String.Empty;
+
+            try
+            {
+                if (element != null)
+                {
+                    if (element is String)
+                    {
+                        ReturnValue = IfNullGoEmpty((String)element);
+                    }
+                    else
+                    {
+                        ReturnValue = IfNullGoEmpty(element.ToString());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ReturnValue = String.Empty;
+            }
+
+            return ReturnValue;
+        }
+
+        public static String IfNullOrEmptyGoDefault(String element, String defaultValue)
+        {
+            String ReturnValue = String.Empty;
+
+            if (String.IsNullOrEmpty(element) == false)
+            {
+                ReturnValue = defaultValue;
+            }
+            else
+            {
+                ReturnValue = element;
+            }
+
+            return ReturnValue;
+        }
+
+        public static String RemoveLast(String element, int number)
+        {
+            String ReturnValue = String.Empty;
+
+            if (String.IsNullOrEmpty(element) == false)
+            {
+                int Length = element.Length;
+                if (Length >= number)
+                {
+                    ReturnValue = element.Substring(0, Length - number);
+                }
+            }
+
+            return ReturnValue;
+        }
     }
 }

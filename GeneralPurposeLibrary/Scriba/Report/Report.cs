@@ -45,7 +45,6 @@ namespace GeneralPurposeLibrary.Scriba.Report
 
     public abstract class ReportGear
     {
-
         protected String _Prefix;
 
         protected Stopwatch _swRelation;
@@ -68,8 +67,7 @@ namespace GeneralPurposeLibrary.Scriba.Report
         {
             _Arguments = arguments;
 
-
-            if(_Arguments.ManageStartProcess != null)
+            if (_Arguments.ManageStartProcess != null)
             {
                 this.ManageStartProcess = _Arguments.ManageStartProcess;
             }
@@ -78,7 +76,6 @@ namespace GeneralPurposeLibrary.Scriba.Report
             {
                 this.ManageFinishProcess = _Arguments.ManageFinishProcess;
             }
-
         }
 
         protected void DefaultManageStartProcess()
@@ -99,21 +96,19 @@ namespace GeneralPurposeLibrary.Scriba.Report
         protected Action ManageStartProcess = null;
         protected Action ManageFinishProcess = null;
 
-
         public void Process()
         {
             if (this.ManageStartProcess != null)
             {
                 this.ManageStartProcess();
             }
-        
+
             this.InnerProcess();
 
             if (this.ManageFinishProcess != null)
             {
                 this.ManageFinishProcess();
             }
-
         }
 
         protected abstract void InnerProcess();

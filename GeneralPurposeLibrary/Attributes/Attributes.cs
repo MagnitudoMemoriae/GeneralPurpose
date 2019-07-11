@@ -57,9 +57,16 @@ namespace GeneralPurposeLibrary.Attributes
             this._Indexes = indexes;
         }
     }
-
+    /// <summary>
+    /// Helper class to manage Enumerator
+    /// </summary>
     public static class EnumeratorHelper
     {
+        /// <summary>
+        /// Get the dictionary of the properties
+        /// </summary>
+        /// <param name="element"></param>
+        /// <returns></returns>
         public static SortedDictionary<int, PropertyInfo> GetProperties(object element)
         {
             SortedDictionary<int, PropertyInfo> ReturnValue = new SortedDictionary<int, PropertyInfo>();
@@ -88,7 +95,12 @@ namespace GeneralPurposeLibrary.Attributes
 
             return ReturnValue;
         }
-
+        /// <summary>
+        /// Get the dictionry of the properties filtered by index
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public static SortedDictionary<int, PropertyInfo> GetProperties(object element, int index)
         {
             SortedDictionary<int, PropertyInfo> ReturnValue = new SortedDictionary<int, PropertyInfo>();

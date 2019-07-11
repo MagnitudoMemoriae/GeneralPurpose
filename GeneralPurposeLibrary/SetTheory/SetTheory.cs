@@ -1,11 +1,9 @@
 ﻿using GeneralPurposeLibrary.Comparers;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace GeneralPurposeLibrary.SetTheory
 {
-
     public class SetTheory
     {
     }

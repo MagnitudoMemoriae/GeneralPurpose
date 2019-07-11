@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace GeneralPurposeLibrary.Comparers
 {
@@ -11,6 +10,7 @@ namespace GeneralPurposeLibrary.Comparers
     public class ComparerAttribute : Attribute
     {
         private Type _ComparerType;
+
         public Type ComparerType
         {
             get
@@ -26,15 +26,20 @@ namespace GeneralPurposeLibrary.Comparers
                 return this._ComparerType.Name;
             }
         }
+
         public ComparerAttribute(Type comparerType)
         {
             this._ComparerType = comparerType;
         }
     }
 
-
     public static class ComparerFactory
     {
+        /// <summary>
+        /// Create the comparer by type
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public static IComparer<T> Create<T>()
         {
             IComparer<T> ReturnValue = null;
@@ -48,7 +53,7 @@ namespace GeneralPurposeLibrary.Comparers
             Boolean Exist = false;
             for (int iType = 0; iType < types.Count; iType++)
             {
-                System.Attribute[] attrs = System.Attribute.GetCustomAttributes(types[iType]);  // Reflection.  
+                System.Attribute[] attrs = System.Attribute.GetCustomAttributes(types[iType]);  // Reflection.
 
                 foreach (System.Attribute attr in attrs)
                 {
@@ -63,7 +68,6 @@ namespace GeneralPurposeLibrary.Comparers
                             break;
                         }
                     }
-
                 }
                 if (Exist == true)
                 {

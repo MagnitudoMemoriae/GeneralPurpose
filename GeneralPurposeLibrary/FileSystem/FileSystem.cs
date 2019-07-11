@@ -6,7 +6,6 @@ using System.Text;
 
 namespace GeneralPurposeLibrary.FileSystem
 {
-
     public static class FileSystems
     {
         public static class File
@@ -81,6 +80,7 @@ namespace GeneralPurposeLibrary.FileSystem
                         File.Delete.Refresh(di.GetFiles());
                     }
                 }
+
                 /// <summary>
                 /// Delete and refresh all files <b>fis</b>
                 /// </summary>
@@ -95,6 +95,7 @@ namespace GeneralPurposeLibrary.FileSystem
                         }
                     }
                 }
+
                 /// <summary>
                 /// Delete and refresh file <b>fi</b>
                 /// </summary>
@@ -165,8 +166,6 @@ namespace GeneralPurposeLibrary.FileSystem
                         ReturnValue++;
                     }
 
-
-
                     return ReturnValue;
                 }
             }
@@ -202,7 +201,7 @@ namespace GeneralPurposeLibrary.FileSystem
                         di.Delete();
                         di.Refresh();
                     }
-                }         
+                }
 
                 /// <summary>
                 /// Delete all file and folder under  <b>folderName</b> and the delete  <b>folderName</b>
@@ -224,6 +223,7 @@ namespace GeneralPurposeLibrary.FileSystem
 
                     return ReturnValue;
                 }
+
                 /// <summary>
                 /// Delete all file and folder under  <b>di</b> and the delete  <b>di</b>
                 /// </summary>
@@ -280,7 +280,6 @@ namespace GeneralPurposeLibrary.FileSystem
                     {
                         if (di.Exists == true)
                         {
-
                             File.Delete.Refresh(di);
 
                             foreach (DirectoryInfo subDi in di.GetDirectories())
@@ -297,7 +296,6 @@ namespace GeneralPurposeLibrary.FileSystem
 
                     return ReturnValue;
                 }
-
             }
 
             public static class Create
@@ -322,18 +320,15 @@ namespace GeneralPurposeLibrary.FileSystem
 
                     try
                     {
-
                         DirectoryInfo diSource = new DirectoryInfo(sourcePath);
                         DirectoryInfo diTarget = new DirectoryInfo(targetPath);
 
                         ReturnValue = FilesFromOneFolderToAnother(diSource, diTarget);
-
                     }
                     catch (Exception ex)
                     {
                         ReturnValue = -1;
                     }
-
 
                     return ReturnValue;
                 }
@@ -353,12 +348,10 @@ namespace GeneralPurposeLibrary.FileSystem
 
                     return ReturnValue;
                 }
-
             }
 
             public static class Compress
             {
-
             }
 
             public static Boolean Exist(string folderName)
@@ -371,14 +364,6 @@ namespace GeneralPurposeLibrary.FileSystem
                 di.Refresh();
                 return di.Exists;
             }
-
-
         }
-
-
-
     }
-
-
-    
 }
