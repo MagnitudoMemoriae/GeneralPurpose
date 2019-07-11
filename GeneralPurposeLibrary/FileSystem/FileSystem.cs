@@ -9,7 +9,6 @@ namespace GeneralPurposeLibrary.FileSystem
 
     public static class FileSystems
     {
-        //Begin  Experimental
         public static class File
         {
             public static class Write
@@ -188,11 +187,6 @@ namespace GeneralPurposeLibrary.FileSystem
                 {
                     return new FileInfo(System.IO.Path.Combine(pathBefore, pathAfter));
                 }
-
-                //public static FileInfo Combine(DirectoryInfo pathBefore, FileInfo pathAfter)
-                //{
-                //    return new FileInfo(System.IO.Path.Combine(pathBefore.FullName, pathAfter.Name));
-                //}
             }
         }
 
@@ -362,6 +356,10 @@ namespace GeneralPurposeLibrary.FileSystem
 
             }
 
+            public static class Compress
+            {
+
+            }
 
             public static Boolean Exist(string folderName)
             {
@@ -374,49 +372,7 @@ namespace GeneralPurposeLibrary.FileSystem
                 return di.Exists;
             }
 
-            /// <summary>
-            /// Delete all file and folder under  <b>folderName</b>
-            /// </summary>
-            /// <param name="folderName"></param>
-            public static void ClearFolder(string folderName)
-            {
-                DirectoryInfo dir = new DirectoryInfo(folderName);
 
-                if (dir.Exists == true)
-                {
-                    foreach (FileInfo fi in dir.GetFiles())
-                    {
-                        fi.Refresh();
-                        fi.Delete();
-                        fi.Refresh();
-                    }
-
-                    foreach (DirectoryInfo di in dir.GetDirectories())
-                    {
-                        ClearFolder(di.FullName);
-                        di.Refresh();
-                        di.Delete();
-                        di.Refresh();
-                    }
-                }
-            }
-
-            /// <summary>
-            /// Delete all file and folder under  <b>folderName</b> and the delete  <b>folderName</b>
-            /// </summary>
-            /// <param name="folderName"></param>
-            public static void DeleteFolder(string folderName)
-            {
-                DirectoryInfo di = new DirectoryInfo(folderName);
-
-                if (di.Exists == true)
-                {
-                    ClearFolder(di.FullName);
-                    di.Refresh();
-                    di.Delete();
-                    di.Refresh();
-                }
-            }
         }
 
 
