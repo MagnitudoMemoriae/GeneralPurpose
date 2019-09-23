@@ -1,11 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 
 namespace GeneralPurposeLibrary.FileSystem
 {
+    public class FileDescriptor
+    {
+        public readonly DirectoryInfo Folder;
+        public readonly FileInfo Element;
+        public readonly String BaseFolder;
+
+        public FileDescriptor(DirectoryInfo folder, FileInfo element)
+        {
+            Folder = folder;
+            Element = element;
+        }
+
+        public FileDescriptor(DirectoryInfo folder, FileInfo element, String baseFolder)
+        {
+            Folder = folder;
+            Element = element;
+            BaseFolder = baseFolder;
+        }
+    }
+
+    public class FilesDescriptor
+    {
+        public readonly DirectoryInfo Folder;
+        public readonly List<FileInfo> Elements;
+
+        public FilesDescriptor(DirectoryInfo folder, List<FileInfo> elements)
+        {
+            Folder = folder;
+            Elements = elements;
+        }
+    }
     public static class FileSystems
     {
         public static class File
@@ -300,6 +332,11 @@ namespace GeneralPurposeLibrary.FileSystem
 
             public static class Create
             {
+                /// <summary>
+                /// Create an empty folder
+                /// </summary>
+                /// <param name="di"></param>
+                /// <returns></returns>
                 public static Boolean Clear(DirectoryInfo di)
                 {
                     Boolean ReturnValue = false;
@@ -307,6 +344,25 @@ namespace GeneralPurposeLibrary.FileSystem
                     Delete.Clear(di);
                     di.Create();
                     di.Refresh();
+
+                    return ReturnValue;
+                }
+
+
+                /// <summary>
+                /// If folder exist do nothing otherwise create it
+                /// </summary>
+                /// <param name="di"></param>
+                /// <returns></returns>
+                public static Boolean Check(DirectoryInfo di)
+                {
+                    Boolean ReturnValue = false;
+
+                    if (Exist(di) == false)
+                    {
+                        di.Create();
+                        di.Refresh();
+                    }
 
                     return ReturnValue;
                 }
@@ -350,9 +406,7 @@ namespace GeneralPurposeLibrary.FileSystem
                 }
             }
 
-            public static class Compress
-            {
-            }
+
 
             public static Boolean Exist(string folderName)
             {
@@ -365,5 +419,410 @@ namespace GeneralPurposeLibrary.FileSystem
                 return di.Exists;
             }
         }
+
+        public enum FileCompressionMode
+        {
+            DELETEFOLDERANDCREATE,
+            DELETEFILES,
+            CREATEFILE,
+            UPDATEFILE
+        }
+
+        public static class Compression
+        {
+            public static class Files
+            {
+                public static FileInfo InFlatFolder(FilesDescriptor descriptor,
+                                                    FileInfo compressedFileName,
+                                                    FileCompressionMode mode)
+                {
+                    FileInfo ReturnValue = null;
+
+                    try
+                    {
+                        ReturnValue = InFlatFolder(descriptor, compressedFileName, String.Empty, mode);
+                    }
+                    catch (Exception ex)
+                    {
+                        ReturnValue = null;
+                    }
+
+                    return ReturnValue;
+                }
+
+                public static FileInfo InFlatFolder(FilesDescriptor descriptor,
+                                                    FileInfo compressedFileName,
+                                                    String rootFolderName,
+                                                    FileCompressionMode mode)
+                {
+                    FileInfo ReturnValue = null;
+
+                    try
+                    {
+                        ReturnValue = InFlatFolder(descriptor.Elements,
+                                                    compressedFileName,
+                                                    rootFolderName,
+                                                    mode);
+                    }
+                    catch (Exception ex)
+                    {
+                        ReturnValue = null;
+                    }
+
+                    return ReturnValue;
+                }
+
+                /// <summary>
+                /// Add files to a compressed archive , if not exist will be created , if exist files
+                /// </summary>
+                /// <param name="files"></param>
+                /// <param name="outputFolder"></param>
+                /// <param name="compressedFileName"></param>
+                /// <returns></returns>
+                public static FileInfo InFlatFolder(List<FileInfo> files,
+                                                    FileInfo compressedFile,
+                                                    FileCompressionMode mode)
+                {
+                    FileInfo ReturnValue = null;
+
+                    try
+                    {
+                        ReturnValue = InFlatFolder(files, compressedFile, string.Empty, mode);
+                    }
+                    catch (Exception ex)
+                    {
+                        ReturnValue = null;
+                    }
+
+                    return ReturnValue;
+                }
+
+                /// <summary>
+                /// Add files to a compressed archive , if not exist will be created , if exist files
+                /// The name of the entry file in compressed archive is preceded by rootFolderName
+                /// </summary>
+                /// <param name="files"></param>
+                /// <param name="outputFolder"></param>
+                /// <param name="rootFolderName"></param>
+                /// <returns></returns>
+                public static FileInfo InFlatFolder(List<FileInfo> files,
+                                                    FileInfo compressedFile,
+                                                    String rootFolderName,
+                                                    FileCompressionMode mode)
+                {
+                    FileInfo ReturnValue = null;
+
+                    try
+                    {
+                        DirectoryInfo directoryInfo = new DirectoryInfo(compressedFile.DirectoryName);
+                        switch (mode)
+                        {
+                            case FileCompressionMode.DELETEFOLDERANDCREATE:
+                                Folder.Create.Clear(directoryInfo);
+
+                                break;
+
+                            case FileCompressionMode.DELETEFILES:
+                                Folder.Delete.Clean(directoryInfo);
+
+                                break;
+
+                            case FileCompressionMode.CREATEFILE:
+                                Folder.Create.Check(directoryInfo);
+                                File.Delete.Refresh(compressedFile);
+
+                                break;
+
+                            case FileCompressionMode.UPDATEFILE:
+                                Folder.Create.Check(directoryInfo);
+                                break;
+
+                            default:
+                                break;
+                        }
+
+                        if (File.Exist(compressedFile) == false)
+                        {
+                            using (ZipArchive archive = ZipFile.Open(compressedFile.FullName, ZipArchiveMode.Create))
+                            {
+                                archive.Dispose();
+                            }
+                        }
+
+                        using (FileStream zipToOpen = new FileStream(compressedFile.FullName, FileMode.Open))
+                        {
+                            using (ZipArchive archive = new ZipArchive(zipToOpen, ZipArchiveMode.Update))
+                            {
+                                InFlatFolder(files, archive, rootFolderName);
+                            }
+                        }
+
+                        ReturnValue = compressedFile;
+                    }
+                    catch (Exception ex)
+                    {
+                        ReturnValue = null;
+                    }
+
+                    return ReturnValue;
+                }
+
+                public static FileInfo InFlatFolder(Dictionary<String, List<FileInfo>> files,
+                                                    FileInfo compressedFile,
+                                                    FileCompressionMode mode)
+                {
+                    FileInfo ReturnValue = null;
+
+                    try
+                    {
+                        DirectoryInfo directoryInfo = new DirectoryInfo(compressedFile.DirectoryName);
+                        switch (mode)
+                        {
+                            case FileCompressionMode.DELETEFOLDERANDCREATE:
+                                Folder.Create.Clear(directoryInfo);
+
+                                break;
+
+                            case FileCompressionMode.DELETEFILES:
+                                Folder.Delete.Clean(directoryInfo);
+
+                                break;
+
+                            case FileCompressionMode.CREATEFILE:
+                                Folder.Create.Check(directoryInfo);
+                                File.Delete.Refresh(compressedFile);
+
+                                break;
+
+                            case FileCompressionMode.UPDATEFILE:
+                                Folder.Create.Check(directoryInfo);
+                                break;
+
+                            default:
+                                break;
+                        }
+
+                        if (File.Exist(compressedFile) == false)
+                        {
+                            using (ZipArchive archive = ZipFile.Open(compressedFile.FullName, ZipArchiveMode.Create))
+                            {
+                                archive.Dispose();
+                            }
+                        }
+
+                        using (FileStream zipToOpen = new FileStream(compressedFile.FullName, FileMode.Open))
+                        {
+                            using (ZipArchive archive = new ZipArchive(zipToOpen, ZipArchiveMode.Update))
+                            {
+                                foreach (KeyValuePair<String, List<FileInfo>> item in files)
+                                {
+                                    InFlatFolder(item.Value, archive, item.Key);
+                                }
+                            }
+                        }
+
+                        ReturnValue = compressedFile;
+                    }
+                    catch (Exception ex)
+                    {
+                        ReturnValue = null;
+                    }
+
+                    return ReturnValue;
+                }
+
+                public static Boolean InFlatFolder(List<FileInfo> files,
+                                                    ZipArchive archive,
+                                                    String rootFolderName)
+                {
+                    Boolean ReturnValue = false;
+
+                    try
+                    {
+                        for (int iFileToCompress = 0; iFileToCompress < files.Count; iFileToCompress++)
+                        {
+                            FileInfo FileToCompress = files[iFileToCompress];
+                            String EntryName = String.Empty;
+
+                            if (String.IsNullOrEmpty(rootFolderName) == true)
+                            {
+                                EntryName = FileToCompress.Name;
+                            }
+                            else
+                            {
+                                EntryName = rootFolderName + @"\" + FileToCompress.Name;
+                            }
+
+                            if (FileToCompress.Exists == true)
+                            {
+                                ZipArchiveEntry readmeEntry = archive.CreateEntryFromFile(FileToCompress.FullName, EntryName);
+                            }
+                        }
+
+                        ReturnValue = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        ReturnValue = false;
+                    }
+
+                    return ReturnValue;
+                }
+            }
+
+            public static class Folders
+            {
+
+                public static FileInfo InFlatFolder(DirectoryInfo folder,
+                                                    FileInfo compressedFile,
+                                                    FileCompressionMode mode)
+                {
+                    FileInfo ReturnValue = null;
+
+                    ReturnValue = InFlatFolder(new List<DirectoryInfo>() { folder }, compressedFile, mode);
+
+                    return ReturnValue;
+                }
+
+                public static FileInfo InFlatFolder(List<DirectoryInfo> folders,
+                                                    FileInfo compressedFile,
+                                                    FileCompressionMode mode)
+
+                {
+                    FileInfo ReturnValue = null;
+
+                    try
+                    {
+                        DirectoryInfo directoryInfo = new DirectoryInfo(compressedFile.DirectoryName);
+                        switch (mode)
+                        {
+                            case FileCompressionMode.DELETEFOLDERANDCREATE:
+                                Folder.Create.Clear(directoryInfo);
+
+                                break;
+
+                            case FileCompressionMode.DELETEFILES:
+                                Folder.Delete.Clean(directoryInfo);
+
+                                break;
+
+                            case FileCompressionMode.CREATEFILE:
+                                Folder.Create.Check(directoryInfo);
+                                File.Delete.Refresh(compressedFile);
+
+                                break;
+
+                            case FileCompressionMode.UPDATEFILE:
+                                Folder.Create.Check(directoryInfo);
+                                break;
+
+                            default:
+                                break;
+                        }
+
+                        if (File.Exist(compressedFile) == false)
+                        {
+                            using (ZipArchive archive = ZipFile.Open(compressedFile.FullName, ZipArchiveMode.Create))
+                            {
+                                archive.Dispose();
+                            }
+                        }
+
+                        for (int iFolderToCompress = 0; iFolderToCompress < folders.Count; iFolderToCompress++)
+                        {
+                            DirectoryInfo FoldersToCompress = folders[iFolderToCompress];
+
+                            if (FoldersToCompress.Exists == true)
+                            {
+                                List<FileDescriptor> descriptors = Info.Root(FoldersToCompress);
+
+                                Dictionary<String, List<FileInfo>> dict = new Dictionary<string, List<FileInfo>>();
+                                for (int iDescriptor = 0; iDescriptor < descriptors.Count; iDescriptor++)
+                                {
+                                    if (dict.ContainsKey(descriptors[iDescriptor].BaseFolder) == true)
+                                    {
+                                        dict[descriptors[iDescriptor].BaseFolder].Add(descriptors[iDescriptor].Element);
+                                    }
+                                    else
+                                    {
+                                        dict.Add(descriptors[iDescriptor].BaseFolder, new List<FileInfo>() { descriptors[iDescriptor].Element });
+                                    }
+                                }
+
+                                foreach (KeyValuePair<String, List<FileInfo>> baseFolder in dict)
+                                {
+                                    FileSystems.Compression.Files.InFlatFolder(baseFolder.Value,
+                                                                                         compressedFile,
+                                                                                         baseFolder.Key,
+                                                                                         FileSystems.FileCompressionMode.UPDATEFILE);
+                                }
+                            }
+                        }
+
+                        ReturnValue = compressedFile;
+                    }
+                    catch (Exception ex)
+                    {
+                        ReturnValue = null;
+                    }
+
+                    return ReturnValue;
+                }
+            }
+
+            public static class Info
+            {
+                public static List<FileDescriptor> Root(DirectoryInfo folder)
+                {
+                    List<FileDescriptor> ReturnValue = new List<FileDescriptor>();
+                    String Offset = folder.Name;
+
+                    FileInfo[] files = folder.GetFiles();
+                    for (int iElement = 0; iElement < files.Length; iElement++)
+                    {
+                        FileInfo file = files[iElement];
+                        FileDescriptor descriptor = new FileDescriptor(folder, file, Offset);
+                        ReturnValue.Add(descriptor);
+                    }
+
+                    ReturnValue.AddRange(GetList(folder.GetDirectories().ToList(), Offset));
+
+                    return ReturnValue;
+                }
+
+                public static List<FileDescriptor> GetList(DirectoryInfo folder, String baseFolder)
+                {
+                    List<FileDescriptor> ReturnValue = new List<FileDescriptor>();
+                    String Offset = baseFolder + @"\" + folder.Name;
+
+                    FileInfo[] files = folder.GetFiles();
+                    for (int iElement = 0; iElement < files.Length; iElement++)
+                    {
+                        FileInfo file = files[iElement];
+                        FileDescriptor descriptor = new FileDescriptor(folder, file, Offset);
+                        ReturnValue.Add(descriptor);
+                    }
+
+                    ReturnValue.AddRange(GetList(folder.GetDirectories().ToList(), Offset));
+
+                    return ReturnValue;
+                }
+
+                public static List<FileDescriptor> GetList(List<DirectoryInfo> elements, String baseFolder)
+                {
+                    List<FileDescriptor> ReturnValue = new List<FileDescriptor>();
+
+                    //DirectoryInfo[] folders = elements.GetDirectories();
+                    for (int iElement = 0; iElement < elements.Count; iElement++)
+                    {
+                        ReturnValue.AddRange(GetList(elements[iElement], baseFolder));
+                    }
+
+                    return ReturnValue;
+                }
+            }
+        }
+
+
     }
 }

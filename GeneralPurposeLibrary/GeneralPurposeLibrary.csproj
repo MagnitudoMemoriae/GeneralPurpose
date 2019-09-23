@@ -5,6 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Java\Lang\" />
+    <Folder Include="Java\Oracle\Binding\Criteria\" />
     <Folder Include="Scriba\Log\" />
   </ItemGroup>
 
