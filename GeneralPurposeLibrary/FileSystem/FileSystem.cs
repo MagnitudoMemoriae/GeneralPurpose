@@ -26,7 +26,6 @@ namespace GeneralPurposeLibrary.FileSystem
             BaseFolder = baseFolder;
         }
     }
-
     public class FilesDescriptor
     {
         public readonly DirectoryInfo Folder;
@@ -432,7 +431,7 @@ namespace GeneralPurposeLibrary.FileSystem
         {
             public static class Files
             {
-                public static FileInfo InFlatFolder(FilesDescriptor descriptor,
+                public static FileInfo Execute(FilesDescriptor descriptor,
                                                     FileInfo compressedFileName,
                                                     FileCompressionMode mode)
                 {
@@ -440,7 +439,7 @@ namespace GeneralPurposeLibrary.FileSystem
 
                     try
                     {
-                        ReturnValue = InFlatFolder(descriptor, compressedFileName, String.Empty, mode);
+                        ReturnValue = Execute(descriptor, compressedFileName, String.Empty, mode);
                     }
                     catch (Exception ex)
                     {
@@ -450,7 +449,7 @@ namespace GeneralPurposeLibrary.FileSystem
                     return ReturnValue;
                 }
 
-                public static FileInfo InFlatFolder(FilesDescriptor descriptor,
+                public static FileInfo Execute(FilesDescriptor descriptor,
                                                     FileInfo compressedFileName,
                                                     String rootFolderName,
                                                     FileCompressionMode mode)
@@ -459,7 +458,7 @@ namespace GeneralPurposeLibrary.FileSystem
 
                     try
                     {
-                        ReturnValue = InFlatFolder(descriptor.Elements,
+                        ReturnValue = Execute(descriptor.Elements,
                                                     compressedFileName,
                                                     rootFolderName,
                                                     mode);
@@ -479,7 +478,7 @@ namespace GeneralPurposeLibrary.FileSystem
                 /// <param name="outputFolder"></param>
                 /// <param name="compressedFileName"></param>
                 /// <returns></returns>
-                public static FileInfo InFlatFolder(List<FileInfo> files,
+                public static FileInfo Execute(List<FileInfo> files,
                                                     FileInfo compressedFile,
                                                     FileCompressionMode mode)
                 {
@@ -487,7 +486,7 @@ namespace GeneralPurposeLibrary.FileSystem
 
                     try
                     {
-                        ReturnValue = InFlatFolder(files, compressedFile, string.Empty, mode);
+                        ReturnValue = Execute(files, compressedFile, string.Empty, mode);
                     }
                     catch (Exception ex)
                     {
@@ -505,7 +504,7 @@ namespace GeneralPurposeLibrary.FileSystem
                 /// <param name="outputFolder"></param>
                 /// <param name="rootFolderName"></param>
                 /// <returns></returns>
-                public static FileInfo InFlatFolder(List<FileInfo> files,
+                public static FileInfo Execute(List<FileInfo> files,
                                                     FileInfo compressedFile,
                                                     String rootFolderName,
                                                     FileCompressionMode mode)
@@ -553,7 +552,7 @@ namespace GeneralPurposeLibrary.FileSystem
                         {
                             using (ZipArchive archive = new ZipArchive(zipToOpen, ZipArchiveMode.Update))
                             {
-                                InFlatFolder(files, archive, rootFolderName);
+                                Execute(files, archive, rootFolderName);
                             }
                         }
 
@@ -567,7 +566,7 @@ namespace GeneralPurposeLibrary.FileSystem
                     return ReturnValue;
                 }
 
-                public static FileInfo InFlatFolder(Dictionary<String, List<FileInfo>> files,
+                public static FileInfo Execute(Dictionary<String, List<FileInfo>> files,
                                                     FileInfo compressedFile,
                                                     FileCompressionMode mode)
                 {
@@ -616,7 +615,7 @@ namespace GeneralPurposeLibrary.FileSystem
                             {
                                 foreach (KeyValuePair<String, List<FileInfo>> item in files)
                                 {
-                                    InFlatFolder(item.Value, archive, item.Key);
+                                    Execute(item.Value, archive, item.Key);
                                 }
                             }
                         }
@@ -631,7 +630,7 @@ namespace GeneralPurposeLibrary.FileSystem
                     return ReturnValue;
                 }
 
-                public static Boolean InFlatFolder(List<FileInfo> files,
+                public static Boolean Execute(List<FileInfo> files,
                                                     ZipArchive archive,
                                                     String rootFolderName)
                 {
@@ -673,18 +672,18 @@ namespace GeneralPurposeLibrary.FileSystem
             public static class Folders
             {
 
-                public static FileInfo InFlatFolder(DirectoryInfo folder,
+                public static FileInfo Execute(DirectoryInfo folder,
                                                     FileInfo compressedFile,
                                                     FileCompressionMode mode)
                 {
                     FileInfo ReturnValue = null;
 
-                    ReturnValue = InFlatFolder(new List<DirectoryInfo>() { folder }, compressedFile, mode);
+                    ReturnValue = Execute(new List<DirectoryInfo>() { folder }, compressedFile, mode);
 
                     return ReturnValue;
                 }
 
-                public static FileInfo InFlatFolder(List<DirectoryInfo> folders,
+                public static FileInfo Execute(List<DirectoryInfo> folders,
                                                     FileInfo compressedFile,
                                                     FileCompressionMode mode)
 
@@ -751,7 +750,7 @@ namespace GeneralPurposeLibrary.FileSystem
 
                                 foreach (KeyValuePair<String, List<FileInfo>> baseFolder in dict)
                                 {
-                                    FileSystems.Compression.Files.InFlatFolder(baseFolder.Value,
+                                    FileSystems.Compression.Files.Execute(baseFolder.Value,
                                                                                          compressedFile,
                                                                                          baseFolder.Key,
                                                                                          FileSystems.FileCompressionMode.UPDATEFILE);
