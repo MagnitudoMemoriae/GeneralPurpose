@@ -26,6 +26,7 @@ namespace GeneralPurposeLibrary.FileSystem
             BaseFolder = baseFolder;
         }
     }
+
     public class FilesDescriptor
     {
         public readonly DirectoryInfo Folder;
@@ -37,6 +38,7 @@ namespace GeneralPurposeLibrary.FileSystem
             Elements = elements;
         }
     }
+
     public static class FileSystems
     {
         public static class File
@@ -347,7 +349,6 @@ namespace GeneralPurposeLibrary.FileSystem
                     return ReturnValue;
                 }
 
-
                 /// <summary>
                 /// If folder exist do nothing otherwise create it
                 /// </summary>
@@ -404,8 +405,6 @@ namespace GeneralPurposeLibrary.FileSystem
                     return ReturnValue;
                 }
             }
-
-
 
             public static Boolean Exist(string folderName)
             {
@@ -671,7 +670,6 @@ namespace GeneralPurposeLibrary.FileSystem
 
             public static class Folders
             {
-
                 public static FileInfo Execute(DirectoryInfo folder,
                                                     FileInfo compressedFile,
                                                     FileCompressionMode mode)
@@ -821,7 +819,5 @@ namespace GeneralPurposeLibrary.FileSystem
                 }
             }
         }
-
-
     }
 }

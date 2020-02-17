@@ -57,6 +57,7 @@ namespace GeneralPurposeLibrary.Attributes
             this._Indexes = indexes;
         }
     }
+
     /// <summary>
     /// Helper class to manage Enumerator
     /// </summary>
@@ -95,6 +96,7 @@ namespace GeneralPurposeLibrary.Attributes
 
             return ReturnValue;
         }
+
         /// <summary>
         /// Get the dictionry of the properties filtered by index
         /// </summary>

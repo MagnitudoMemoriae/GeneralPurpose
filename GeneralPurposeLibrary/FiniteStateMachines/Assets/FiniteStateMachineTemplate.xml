@@ -1,5 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Transitions>
-  <Transition CurrentState="" Event="" NextState="" />
-  <Transition CurrentState="" Event="" NextState="" />
-</Transitions>
+<XmlFiniteStateMachine>
+  <XmlFSMState Name="" />
+  <XmlFSMState Name="" />
+  <XmlListOfCondition Name="">
+    <XmlFSMCondition Name="" />
+    <XmlFSMCondition Name="" />
+    <XmlFSMCondition Name="" />
+  </XmlListOfCondition>
+  <XmlListOfCondition Name="">
+    <XmlFSMCondition Name="" />
+    <XmlFSMCondition Name="" />
+  </XmlListOfCondition>
+  <XmlFSMConditions Name="" ListOfCondition="" Operation="" />
+  <XmlFSMConditions Name="" ListOfCondition="" />
+  <XmlFSMEvent Name="" Conditions="" />
+  <Xml Name="" Conditions="" />
+
+  <XmlTransition CurrentState="" Event="" NextState="" />
+  <XmlTransition CurrentState="" Event="" NextState="" />
+</XmlFiniteStateMachine>
