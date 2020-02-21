@@ -203,12 +203,34 @@ namespace GeneralPurposeLibrary.FileSystem
                 }
             }
 
+
+            public static Boolean Exist(String fullPath)
+            {
+                Boolean ReturnValue = false;
+                try
+                {
+                    ReturnValue = Exist(new FileInfo(fullPath));
+                }
+                catch(Exception ex)
+                {
+                    ReturnValue = false;
+                }
+                
+                return ReturnValue;
+            }
+
             public static Boolean Exist(FileInfo fi)
             {
                 Boolean ReturnValue = false;
-
-                fi.Refresh();
-                ReturnValue = fi.Exists;
+                try
+                {
+                    fi.Refresh();
+                    ReturnValue = fi.Exists;
+                }
+                catch (Exception ex)
+                {
+                    ReturnValue = false;
+                }
 
                 return ReturnValue;
             }
