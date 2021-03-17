@@ -53,6 +53,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RangeTest.cs" />
     <Compile Include="FileSystems.cs" />
+    <Compile Include="ClimbSortAlgorithmTest.cs" />
+    <Compile Include="FilpSortAlgorithmTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
