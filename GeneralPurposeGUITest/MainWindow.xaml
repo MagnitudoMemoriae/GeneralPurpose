@@ -1,0 +1,21 @@
+﻿<Window x:Class="GeneralPurposeGUITest.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GeneralPurposeGUITest"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <TabControl>
+            <TabItem Header="OR">
+                <StackPanel>
+                    <Button Name="btnTest001" Content="Test001" Click="btnTest001_Click"/>
+                    <Button Name="btnTest002" Content="Test002" Click="btnTest002_Click"/>
+
+
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

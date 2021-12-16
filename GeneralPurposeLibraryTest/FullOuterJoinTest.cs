@@ -1,4 +1,5 @@
 ﻿using GeneralPurposeLibrary;
+using GeneralPurposeLibrary.SetTheory;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;

@@ -1,5 +1,6 @@
 ﻿using GeneralPurposeLibrary;
 using GeneralPurposeLibrary.Comparers;
+using GeneralPurposeLibrary.SetTheory;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;

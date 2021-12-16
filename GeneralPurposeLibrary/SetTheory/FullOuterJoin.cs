@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GeneralPurposeLibrary
+namespace GeneralPurposeLibrary.SetTheory
 {
     public class FullOuterJoinResponse<T>
     {

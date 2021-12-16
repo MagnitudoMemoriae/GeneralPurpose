@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using static Google.OrTools.LinearSolver.Solver;
 
-namespace DesktopSandBox.RicercaOperativa
+namespace GeneralPurposeLibrary.OR
 {
     public enum OPTIMIZATION
     {
@@ -12,10 +12,22 @@ namespace DesktopSandBox.RicercaOperativa
         MINIMIZATION
     };
 
+    public enum LINEAR_PROGRAMMING_PROBLEM
+    {
+         R,
+         INTEGER
+    }
+
     public class ProblemMatrix
     {
+
+        // Matrice dei vincoli
         public readonly Double[,] A;
+
+        // Vettore dei Termini noti
         public readonly Double[] B;
+
+        // Vettore dei cosi
         public readonly Double[] C;
 
         public ProblemMatrix(Double[,] a, Double[] b, Double[] c)
@@ -26,15 +38,32 @@ namespace DesktopSandBox.RicercaOperativa
         }
     }
 
+    public static class Helper
+    {
+        public static String GetSolverId(LINEAR_PROGRAMMING_PROBLEM problem)
+        {
+            String ReturnValue = String.Empty; 
+
+             switch(problem)
+            {
+                case LINEAR_PROGRAMMING_PROBLEM.R:
+                    ReturnValue = "GLOP";
+                    break;
+                case LINEAR_PROGRAMMING_PROBLEM.INTEGER:
+                    ReturnValue = "SCIP";
+                    break;
+            }
+
+            return ReturnValue;
+        }
+    }
+
     public abstract class BaseLinearProgramming
     {
-        //protected Double[,] _A;
-        //protected Double[]  _B;
-        //protected Double[]  _C;
         protected ProblemMatrix _Problem;
 
         protected OPTIMIZATION _Optimization;
-        protected OptimizationProblemType _SolverId;
+        protected LINEAR_PROGRAMMING_PROBLEM _ProgrammingProblem;
         protected Boolean _ActiveDebug;
 
         protected List<Variable> _Variables = new List<Variable>();
@@ -43,18 +72,18 @@ namespace DesktopSandBox.RicercaOperativa
         protected int _NumConstrains = 0;
         protected int _NumVariables = 0;
 
-        public BaseLinearProgramming(ProblemMatrix problem, OPTIMIZATION optimization, OptimizationProblemType solver_id, Boolean activeDebug)
+        public BaseLinearProgramming(ProblemMatrix problem, OPTIMIZATION optimization, LINEAR_PROGRAMMING_PROBLEM programmingProblem, Boolean activeDebug)
         {
             _Problem = problem;
 
             _Optimization = optimization;
-            _SolverId = solver_id;
+            _ProgrammingProblem = programmingProblem;
             _ActiveDebug = activeDebug;
 
             _NumConstrains = _Problem.A.GetLength(0);
             _NumVariables = _Problem.A.GetLength(1);
 
-            String sType = _SolverId.ToString().Split("_")[0];
+            String sType = Helper.GetSolverId(programmingProblem);
             _Solver = Solver.CreateSolver(sType);
 
             _Variables = this._GetVariables();
@@ -62,8 +91,8 @@ namespace DesktopSandBox.RicercaOperativa
 
         public BaseLinearProgramming(Double[,] a, Double[] b, Double[] c,
                                         OPTIMIZATION optimization,
-                                        OptimizationProblemType solver_id,
-                                        Boolean activeDebug) : this(new ProblemMatrix(a, b, c), optimization, solver_id, activeDebug)
+                                        LINEAR_PROGRAMMING_PROBLEM programmingProblem ,
+                                        Boolean activeDebug) : this(new ProblemMatrix(a, b, c), optimization, programmingProblem, activeDebug)
         {
         }
 
@@ -81,13 +110,13 @@ namespace DesktopSandBox.RicercaOperativa
                 int iVar = i + 1;
                 String sVar = this.ToStringVariableName(iVar);
                 Variable x; ;
-                switch (this._SolverId)
+                switch (this._ProgrammingProblem)
                 {
-                    case OptimizationProblemType.GLOP_LINEAR_PROGRAMMING:
+                    case LINEAR_PROGRAMMING_PROBLEM.R:
                         x = solver.MakeNumVar(0.0, double.PositiveInfinity, sVar);
                         break;
 
-                    case OptimizationProblemType.SCIP_MIXED_INTEGER_PROGRAMMING:
+                    case LINEAR_PROGRAMMING_PROBLEM.INTEGER:
                         x = solver.MakeIntVar(0.0, double.PositiveInfinity, sVar);
                         break;
 
@@ -146,7 +175,7 @@ namespace DesktopSandBox.RicercaOperativa
     public class LinearProgramming : BaseLinearProgramming
     {
 
-        public LinearProgramming(ProblemMatrix problem, OPTIMIZATION optimization, OptimizationProblemType solver_id, Boolean activeDebug) : base(problem, optimization, solver_id, activeDebug)
+        public LinearProgramming(ProblemMatrix problem, OPTIMIZATION optimization, LINEAR_PROGRAMMING_PROBLEM programmingProblem, Boolean activeDebug) : base(problem, optimization, programmingProblem, activeDebug)
         {
             for (int iCt = 0; iCt < this.GetNumberOfConstraints; iCt++)
             {
@@ -183,12 +212,12 @@ namespace DesktopSandBox.RicercaOperativa
             }
         }
 
-        public LinearProgramming(Double[,] a, Double[] b, Double[] c, OPTIMIZATION optimization, OptimizationProblemType solver_id, Boolean activeDebug) : this(new ProblemMatrix(a, b, c), optimization, solver_id, activeDebug)
+        public LinearProgramming(Double[,] a, Double[] b, Double[] c, OPTIMIZATION optimization, LINEAR_PROGRAMMING_PROBLEM programmingProblem, Boolean activeDebug) : this(new ProblemMatrix(a, b, c), optimization, programmingProblem, activeDebug)
         {
 
         }
     }
-
+#if false
     internal class PlayGround
     {
 #if false
@@ -260,15 +289,16 @@ namespace DesktopSandBox.RicercaOperativa
         {
             Debug.WriteLine("Test001");
 
-            Double[,] A = new Double[,] { { 1, 2 }, { -3, 1 }, { 1, -1 } };
-            Double[] B = new Double[] { 14, 0, 2 };
-            Double[] C = new Double[] { 3, 4 };
+           
+            //Double[,] A = new Double[,] { { 1, 2 }, { -3, 1 }, { 1, -1 } };
+            //Double[] B = new Double[] { 14, 0, 2 };
+            //Double[] C = new Double[] { 3, 4 };
 
             //Double[,] A = new Double[,] { { 1, 7 }, { 1, 0 } };
             //Double[]  B = new Double[] { 17.5 , 3.5 };
             //Double[]  C = new Double[] { 1, 10 };
 
-
+            // I vincoli sono nella forma  NegativeInfinity <= A * xi <= Bi
             ProblemMatrix pm1 = new ProblemMatrix(new Double[,] { { 1, 2 }, { -3, 1 }, { 1, -1 } }, new Double[] { 14, 0, 2 }, new Double[] { 3, 4 });
             ProblemMatrix pm2 = new ProblemMatrix(new Double[,] { { 1, 7 }, { 1, 0 } }, new Double[] { 17.5, 3.5 }, new Double[] { 1, 10 });
 
@@ -467,5 +497,20 @@ namespace DesktopSandBox.RicercaOperativa
                 Debug.WriteLine($"x{iVar + 1} = " + lp.Variables[0].SolutionValue());
             }
         }
-    }
+
+        public static void Test005()
+        {
+            ProblemMatrix pm1 = new ProblemMatrix(new Double[,] { { -1, 0 }, { 0, -1 }, { 1, 3 } }, new Double[] { -1, -1, 14 }, new Double[] { 1, 4 });
+            LinearProgramming clp = new LinearProgramming(pm1, OPTIMIZATION.MAXIMIZATION, OptimizationProblemType.GLOP_LINEAR_PROGRAMMING, true);
+            Solver.ResultStatus resultStatus = clp.Solver.Solve();
+
+            // Check that the problem has an optimal solution.
+            if (resultStatus != Solver.ResultStatus.OPTIMAL)
+            {
+                Debug.WriteLine("The problem does not have an optimal solution!");
+            }
+            Print(clp);
+        }
+     }
+#endif
 }

@@ -10,4 +10,8 @@
     <Folder Include="Scriba\Log\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Google.OrTools" Version="9.2.9972" />
+  </ItemGroup>
+
 </Project>
