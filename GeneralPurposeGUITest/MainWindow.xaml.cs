@@ -1,4 +1,5 @@
 ﻿using GeneralPurposeLibrary.OR;
+using GeneralPurposeLibrary.Sat.TwoSat;
 using Google.OrTools.LinearSolver;
 using System;
 using System.Collections.Generic;
@@ -86,6 +87,9 @@ namespace GeneralPurposeGUITest
             Debug.WriteLine("Problem solved in " + lp.Solver.Nodes() + " branch-and-bound nodes");
         }
 
-
+        private void btnTwoSatTest001_Click(object sender, RoutedEventArgs e)
+        {
+            TwoSatGenerator generator = new TwoSatGenerator(20, 40, 0.2,seed:30);
+        }
     }
 }

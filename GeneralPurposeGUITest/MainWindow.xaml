@@ -16,6 +16,13 @@
 
                 </StackPanel>
             </TabItem>
+            <TabItem Header="TwoSat">
+                <StackPanel>
+                    <Button Name="btnTwoSatTest001" Content="TwoSat Test001" Click="btnTwoSatTest001_Click"/>
+
+
+                </StackPanel>
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>
